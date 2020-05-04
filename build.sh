@@ -24,13 +24,18 @@ create_archive() {
   OUTPUT=$1
 
   echo "[*] Creating archive $OUTPUT ..."
-  zip -j "$OUTPUT" aquatone ../README.md ../LICENSE.md > /dev/null
+  zip -j "$OUTPUT" aquatone ../README.md ../LICENSE.txt > /dev/null
   rm -rf aquatone aquatone.exe
 }
 
 build_linux_amd64() {
   echo "[*] Building linux/amd64 ..."
   GOOS=linux GOARCH=amd64 go build -o aquatone ..
+}
+
+build_linux_arm64() {
+  echo "[*] Building linux/arm64 ..."
+  GOOS=linux GOARCH=arm go build -o aquatone ..
 }
 
 build_macos_amd64() {
@@ -48,6 +53,7 @@ mkdir $BUILD_FOLDER
 cd $BUILD_FOLDER
 
 build_linux_amd64 && create_archive aquatone_linux_amd64_$VERSION.zip
+build_linux_arm64 && create_archive aquatone_linux_arm64_$VERSION.zip
 build_macos_amd64 && create_archive aquatone_macos_amd64_$VERSION.zip
 build_windows_amd64 && create_exe_archive aquatone_windows_amd64_$VERSION.zip
 shasum -a 256 * > checksums.txt

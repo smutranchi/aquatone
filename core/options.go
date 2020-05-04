@@ -9,6 +9,8 @@ import (
 type Options struct {
 	Threads           *int
 	OutDir            *string
+	SessionPath       *string
+	TemplatePath      *string
 	Proxy             *string
 	ChromePath        *string
 	Resolution        *string
@@ -20,12 +22,15 @@ type Options struct {
 	SaveBody          *bool
 	Silent            *bool
 	Debug             *bool
+	Version           *bool
 }
 
 func ParseOptions() (Options, error) {
 	options := Options{
 		Threads:           flag.Int("threads", 0, "Number of concurrent threads (default number of logical CPUs)"),
 		OutDir:            flag.String("out", ".", "Directory to write files to"),
+		SessionPath:       flag.String("session", "", "Load Aquatone session file and generate HTML report"),
+		TemplatePath:      flag.String("template-path", "", "Path to HTML template to use for report"),
 		Proxy:             flag.String("proxy", "", "Proxy to use for HTTP requests"),
 		ChromePath:        flag.String("chrome-path", "", "Full path to the Chrome/Chromium executable to use. By default, aquatone will search for Chrome or Chromium"),
 		Resolution:        flag.String("resolution", "1440,900", "screenshot resolution"),
@@ -37,6 +42,7 @@ func ParseOptions() (Options, error) {
 		SaveBody:          flag.Bool("save-body", true, "Save response bodies to files"),
 		Silent:            flag.Bool("silent", false, "Suppress all output except for errors"),
 		Debug:             flag.Bool("debug", false, "Print debugging information"),
+		Version:           flag.Bool("version", false, "Print current Aquatone version"),
 	}
 
 	flag.Parse()
